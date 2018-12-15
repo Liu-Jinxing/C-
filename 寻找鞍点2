@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int a[3][4];
+    int i,j,b=0,min,max;
+    for(i=0;i<3;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            scanf("%d",&a[i][j]);
+        }
+    }
+    for(i=0;i<3;i++)
+    {
+        max=a[i][0];
+        for(j=0;j<4;j++)
+        {
+            if(max<a[i][j])
+            {
+                max=a[i][j];
+                b=j;
+            }
+        }
+        min=a[0][b]<(a[1][b]<a[2][b]? a[1][b]:a[2][b])? a[0][b]:(a[1][b]<a[2][b]? a[1][b]:a[2][b]);
+        if(min==max)
+        {
+            printf("%d",min);
+            break;
+        }
+    }
+    return 0;
+}
