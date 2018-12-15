@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+
+int main()
+{
+   int a[3][4];
+   int i,j,k,m,n;
+   int max;
+   for(i=0;i<3;i++)
+   {
+       for(j=0;j<4;j++)
+       {
+           scanf("%d",&a[i][j]);
+       }
+   }
+   for(i=0;i<3;i++)
+   {
+       max=a[i][0];
+       m=0;
+       for(j=1;j<4;j++)
+       {
+           if(max<a[i][j])
+           {
+               max=a[i][j];
+               m=j;
+           }
+       }
+       n=1;
+       for(k=0;k<3;k++)
+       {
+           if(max>a[k][m])
+           {
+               n=0;
+           }
+       }
+       if(n)
+       {
+            printf("%d",max);
+            break;
+       }
+   }
+   if(!n)
+       {
+           printf("NO");
+       }
+    return 0;
+}
