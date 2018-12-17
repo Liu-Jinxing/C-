@@ -1,0 +1,15 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int main()
+{
+    char a,A,B,C,D,E,N;
+    float b;
+    scanf("%f",&b);
+
+    a = b>=0&&b<60? 'E':b>=60&&b<70? 'D':b>70&&b<80? 'C':b>=80&&b<90? 'B':b>=90&&b<=100? 'A':'N';
+
+    printf("%c\n",a);
+    return 0;
+}
