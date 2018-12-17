@@ -1,0 +1,17 @@
+#include<stdio.h>
+int main()
+{
+    int i=0;
+    int num= 1;
+    char a;
+
+    while((a =getchar())!='\n')
+    {
+        if(a == ' ')
+        {
+            num++;
+            while((a=getchar())==' ') break;
+        }
+    }
+    printf("%d\n",num);
+}
