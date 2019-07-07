@@ -1,0 +1,542 @@
+#include <stdio.h>
+#include <stdalign.h>
+#include <math.h>
+#include "malloc.h"
+#define LEN sizeof(struct student)
+
+/*
+
+(1)	struct student *create(int n)//创建链表
+(2)	struct student *insert(struct student *head)//尾插节点
+(3)	struct student *Alter(struct student *head,int c)//修改节点数据
+(4)	struct student *load(struct student *head,int c)//显示学籍信息
+(5)	struct student *load1(struct student *head)//测试用的函数，输出链表
+(6)	struct student *load2(struct student *head,int c)//输入班级输出信息
+(7)	struct student *Delete(struct student *head,int c)//删除节点
+(8)	struct student *InFile(struct student *head)//把链表数据输入文件，以追加的方式
+(9)	struct student *InFile1(struct student *head)//把链表数据输入文件，以覆盖的方式
+(10)struct student *OutFile()//把文件的内容输到链表中
+(11)struct student *load3(struct student *head)//排序输出
+(12)struct student *insert1(struct student *head, struct student *stud)//顺序插入
+
+*/
+
+struct student
+{
+    int sum;
+    int class_number;
+    int id;
+    int card_number;
+    char sex[10];
+    char college[50];
+    char name[20];
+    struct student *next;
+};
+
+struct student *create(int n)
+{
+    struct student *p1=NULL,*p2=NULL,*head=NULL;
+    int i;
+    printf("按照班级编号、学号、卡号、性别、姓名、学院 录入...\n");
+    printf("(性别表示：男：male   女：female)\n");
+    for(i=1; i<=n; i++)
+    {
+        p1=(struct student *)malloc(LEN);
+        scanf("%d",&p1->class_number);
+        scanf("%d",&p1->id);
+        scanf("%d",&p1->card_number);
+        scanf("%s",p1->sex);
+        scanf("%s",p1->name);
+        scanf("%s",p1->college);
+        p1->next=NULL;
+        if(i==1)
+        {
+            head=p1;
+        }
+        else
+        {
+            p2->next=p1;
+        }
+        p2=p1;
+    }
+    return (head);
+}
+
+struct student *insert(struct student *head)
+{
+    struct student *p1=NULL,*p=NULL;
+    p=head;
+    while(p->next!=NULL)
+    {
+        p=p->next;
+    }
+    printf("按照班级编号、学号、卡号、性别、姓名、学院 录入...\n");
+    printf("(性别表示：男：male   女：female)\n");
+    p1=(struct student *)malloc(LEN);
+    scanf("%d",&p1->class_number);
+    scanf("%d",&p1->id);
+    scanf("%d",&p1->card_number);
+    scanf("%s",p1->sex);
+    scanf("%s",p1->name);
+    scanf("%s",p1->college);
+    p->next=p1;
+    p1->next = NULL;
+    return (head);
+}
+
+struct student *Alter(struct student *head,int c)
+{
+    struct student *p;
+    int a=0;
+    p = head;
+    while(p != NULL)
+    {
+        if(p->card_number == c)
+        {
+            printf("按照班级编号、学号、卡号、性别、姓名、学院 录入...\n");
+            printf("(性别表示：男：male   女：female)\n");
+            scanf("%d",&p->class_number);
+            scanf("%d",&p->id);
+            scanf("%d",&p->card_number);
+            scanf("%s",p->sex);
+            scanf("%s",p->name);
+            scanf("%s",p->college);
+            a++;
+        }
+        p=p->next;
+    }
+    if(a==0)
+    {
+        printf("您输入的卡号不存在！\n");
+    }
+    return head;
+}
+
+struct student *load(struct student *head,int c)
+{
+    struct student *p;
+    int a=0;
+    p = head;
+    while(p != NULL)
+    {
+        if(p->card_number == c)
+        {
+            printf("%d ",p->class_number);
+            printf("%d ",p->id);
+            printf("%d ",p->card_number);
+            printf("%s ",p->sex);
+            printf("%s ",p->name);
+            printf("%s ",p->college);
+            printf("\n");
+            a++;
+        }
+        p=p->next;
+    }
+    if(a==0)
+    {
+        printf("您输入的卡号不存在！\n");
+    }
+    return head;
+}
+
+struct student *load1(struct student *head)
+{
+    struct student *p;
+    p = head;
+    while(p != NULL)
+    {
+        printf("%d ",p->class_number);
+        printf("%d ",p->id);
+        printf("%d ",p->card_number);
+        printf("%s ",p->sex);
+        printf("%s ",p->name);
+        printf("%s ",p->college);
+        printf("\n");
+        p=p->next;
+    }
+    return head;
+}
+
+struct student *load2(struct student *head,int c)
+{
+    struct student *p;
+    int a=0;
+    p = head;
+    while(p != NULL)
+    {
+        if(p->class_number == c)
+        {
+            printf("%d ",p->class_number);
+            printf("%d ",p->id);
+            printf("%d ",p->card_number);
+            printf("%s ",p->sex);
+            printf("%s ",p->name);
+            printf("%s ",p->college);
+            printf("\n");
+            a++;
+        }
+        p=p->next;
+    }
+    if(a==0)
+    {
+        printf("您输入的班级不存在！\n");
+    }
+    return head;
+}
+
+struct student *insert1(struct student *head, struct student *stud)
+{
+    struct student *p0,*p1,*p2;
+    p1=head;
+    p0=stud;
+    if(head==NULL)
+    {
+        head=p0;
+    }
+    else
+    {
+        while( (p0->class_number > p1->class_number) && (p1->next!=NULL) )
+        {
+            p2=p1;
+            p1=p1->next;
+        }
+        if( p0->class_number < p1->class_number )
+        {
+            if( head==p1 )
+                head=p0;
+            else
+                p2->next=p0;
+            p0->next=p1;
+        }
+        else
+        {
+            p1->next=p0;
+        }
+    }
+    return(head);
+}
+
+struct student *load3(struct student *head)
+{
+    struct student *sort_head=NULL, *p=NULL;
+    if(head==NULL || head->next==NULL)
+        return head;
+    while(head)
+    {
+        p=head;
+        head = head -> next;
+        p->next = NULL;
+        sort_head = insert1(sort_head, p);
+    }
+    return sort_head;
+}
+
+
+struct student *Delete(struct student *head,int c)
+{
+    struct student *p,*p1;
+    int count=0;
+    p=head;
+    if(p->card_number==c)
+    {
+        head=p->next;
+        return head;
+    }
+    else
+    {
+        while(p!=NULL)
+        {
+            p1=p->next;
+            if(p1->card_number==c && p1!=NULL )
+            {
+                p->next=p1->next;
+                printf("删除成功！");
+                count++;
+                break;
+            }
+            p=p->next;
+        }
+        if(count != 0)
+        {
+            return head;
+        }
+        else
+        {
+            printf("你要删除的卡号不存在！");
+            return head;
+        }
+    }
+}
+
+struct student *InFile(struct student *head)
+{
+    struct student *p;
+    p=head;
+    FILE *fp=fopen("school_roll.txt","a+");
+    if(fp==NULL)
+    {
+        printf("文件打开失败！");
+        return head;
+    }
+    while(p!=NULL)
+    {
+        fprintf(fp,"%d %d %d %s %s %s\n",p->class_number,p->id,p->card_number,p->sex,p->name,p->college);
+        p = p->next;
+    }
+    fclose(fp);
+    return head;
+}
+
+struct student *InFile1(struct student *head)
+{
+    struct student *p;
+    p=head;
+    FILE *fp=fopen("school_roll.txt","w+");
+    if(fp==NULL)
+    {
+        printf("文件打开失败！");
+        return head;
+    }
+    while(p!=NULL)
+    {
+        fprintf(fp,"%d %d %d %s %s %s\n",p->class_number,p->id,p->card_number,p->sex,p->name,p->college);
+        p = p->next;
+    }
+    fclose(fp);
+    return head;
+}
+
+struct student *OutFile()
+{
+    struct student *p,*head,*tail;
+    head=tail=NULL;
+    FILE *fp;
+    if((fp=fopen("school_roll.txt","r"))==NULL)//读取文件信息
+        printf("文件打开失败");
+    p=(struct student *)malloc(LEN);
+    while(fscanf(fp,"%d%d%d%s%s%s\n",&p->class_number,&p->id,&p->card_number,p->sex,p->name,p->college)!=EOF)
+    {
+
+        //fscanf(fp,"%d%d%d%s%s%s\n",&p->class_number,&p->id,&p->card_number,p->sex,p->name,p->college);
+        if(head==NULL)
+            head=p;
+        else
+            tail->next=p;
+        tail=p;
+        p=(struct student *)malloc(LEN);
+    }
+    if(head != NULL)
+    {
+        tail->next=NULL;
+    }
+    fclose(fp);
+    return head;
+}
+
+int main()
+{
+    struct student *head;
+    head = NULL;
+
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n");
+    printf("\t\t\t\t\t*========================================================*\n");
+    printf("\n");
+    printf("\t\t\t\t\t---------------------- 欢迎光临 --------------------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t-------------------- 学籍管理系统 ------------------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t----------------------------------------------------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t-------------- 请按照提示进行操作： ----------------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t-------------- 1:  录入全部学籍---------------------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t-------------- 2:  录入某位学生学籍-----------------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t-------------- 3:  修改学籍信息（输入卡号）  -------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t-------------- 4:  删除学籍信息（输入卡号）---------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t-------------- 5： 显示学籍信息（输入卡号）  -------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t-------------- 6： 显示全班学籍信息（输入班级编号）-------\n");
+    printf("\n");
+    printf("\t\t\t\t\t-------------- 7： 统计功能-------------------------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t-------------- 0:退出系统 -------------------\n");
+    printf("\n");
+    printf("\t\t\t\t\t*=================================================*\n");
+    printf("\n");
+    /*printf("请按照提示进行操作：\n");
+    printf("\n");
+    printf("1:  录入全部学籍 \n");
+    printf("2:  录入某位学生学籍\n");
+    printf("3:  修改学籍信息（输入卡号） \n");
+    printf("4:  删除学籍信息（输入卡号） \n");
+    printf("5： 显示学籍信息（输入卡号） \n");
+    printf("6： 显示全班学籍信息（输入班级编号） \n");
+    printf("0:  退出请按0 \n");*/
+
+
+    printf("\n请进行接下来的操作...\n");
+    int x;
+    scanf("%d",&x);
+
+    while(x!=0)
+    {
+
+        /*全部学籍录入*/
+        if(x==1)
+        {
+            printf("请输入人数：\n");
+            int n;
+            scanf("%d",&n);
+            head = create(n);
+            InFile(head);
+            printf("\n请进行接下来的操作...\n");
+            scanf("%d",&x);
+
+        }
+
+        /*录入某位学生学籍*/
+        else if(x==2)
+        {
+            //插入一个节点
+            head=OutFile();
+            //load1(head);
+            head=insert(head);
+            //load1(head);
+            InFile1(head);
+            printf("\n请进行接下来的操作...\n");
+            scanf("%d",&x);
+            //put_2;
+        }
+
+        /*修改学籍信息（输入卡号）*/
+        else if(x==3)
+        {
+            head=OutFile();
+            if(head != NULL)
+            {
+                int a;
+                printf("输入卡号...\n");
+                scanf("%d",&a);
+                //load1(head);
+                Alter(head,a);
+                InFile1(head);
+            }
+            else
+            {
+                printf("文件为空！");
+            }
+            printf("\n请进行接下来的操作...\n");
+            scanf("%d",&x);
+        }
+
+        /*删除学籍信息（输入卡号）*/
+        else if(x==4)
+        {
+            head=OutFile();
+            if(head != NULL)
+            {
+                printf("输入卡号...\n");
+                int m;
+                scanf("%d",&m);
+                head=Delete(head,m);
+                InFile1(head);
+            }
+            else
+            {
+                printf("文件为空！");
+            }
+            printf("\n请进行接下来的操作...\n");
+            scanf("%d",&x);
+            //put_4;
+        }
+
+        /*显示学籍信息（输入卡号）*/
+        else if(x==5)
+        {
+            head=OutFile();
+            if(head != NULL)
+            {
+                printf("输入卡号...\n");
+                int c;
+                scanf("%d",&c);
+                load(head,c);
+            }
+            else
+            {
+                printf("文件为空！");
+            }
+            printf("\n请进行接下来的操作...\n");
+            scanf("%d",&x);
+            //put_5;
+        }
+
+        /*显示全班学籍信息（输入班级编号）*/
+        else if(x==6)
+        {
+            head=OutFile();
+            if(head !=NULL)
+            {
+                int a;
+                printf("输入班级编号...\n");
+                scanf("%d",&a);
+                load2(head,a);
+            }
+            else
+            {
+                printf("文件为空！");
+            }
+            printf("\n请进行接下来的操作...\n");
+            scanf("%d",&x);
+        }
+
+        else if(x==7)
+        {
+            head=OutFile();
+            if(head != NULL)
+            {
+                head=load3(head);
+                load1(head);
+                InFile1(head);
+            }
+            else
+            {
+                printf("文件为空！");
+            }
+            printf("\n请进行接下来的操作...\n");
+            scanf("%d",&x);
+        }
+
+        else if(x==0)
+        {
+            return 0;
+        }
+        else
+        {
+            printf("错误操作\n");
+            printf("\n请进行接下来的操作...\n");
+            scanf("%d",&x);
+        }
+    }
+}
+
+/*  (1）录入某位学生的学生证信息（学生证应该包括的内容请参看自己的学生证）；
+   （2）给定学生的学号，修改该学生的学生证信息；
+   （3）给定学生的学号，删除该学生的学生证信息；
+   （4）根据输入的学生的学号，显示该学生的学生证信息；
+   （5）根据输入的班级的编号，显示该班所有学生的学生证信息；
+   （6）统计功能：提供一些统计各类信息的功能。
+
+    (1）按照分析、设计、编码、调试和测试过程完成应用程序；
+   （2）学习并使用流程图等工具，并在撰写报告中使用；
+   （3）程序的各项功能在程序运行时，以菜单方式选择并执行；
+   （4）要求用户输入数据时，要给出清晰、明确的提示，包括：输入数据的内容、格式及结束方式等
+   （5）所有的信息存储在一个文件或多个中，并实现文件读写操作。
+   （6）程序中用链表存放学生证信息并实现增删减功能。（必须）
+3、提示
+   （1）学生证信息可以设计一个结构体类型
+*/
+
